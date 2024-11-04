@@ -1,0 +1,137 @@
+---@meta
+
+---@class physfs.File
+---@operator len(physfs.File): number|string
+---@field buffSize fun(self: physfs.File, n: integer): physfs.File?, string?
+---@field close fun(self: physfs.File, n: integer): physfs.File?, string?
+---@field eof fun(self: physfs.File): boolean
+---@field flush fun(self: physfs.File): physfs.File?, string?
+---@field length fun(self: physfs.File): integer | string?
+---@field read fun(self: physfs.File, ...: physfs.aliases.formats): number?|string?
+---@field seek fun(self: physfs.File, offset: integer): physfs.File|string?
+---@field tell fun(self: physfs.File): integer?, string?
+---@field write fun(self: physfs.File, ...: string): physfs.File?, string?
+---@field writeInt fun(self: physfs.File, number...): physfs.File?, string?
+---@field tostring fun(self: physfs.File): string
+
+---@class physfs
+---@field cdRomDirs fun(output?: table): table, number
+---@field convInt fun(fmt: physfs.aliases.formats, ...: number): ...: number
+---@field delete fun(path: string): string?, string?
+---@field exists fun(path: string): boolean
+---@field files fun(path: string, output?: table): table, number
+---@field lastError fun(message: string?): string?
+---@field mkdir fun(path: string): string?, string?
+---@field mount fun(name: string, point?: string, prepend?: string): string?, string?
+---@field mountFile fun(file: string, name?: string, point?: string, prepend?: string): physfs.File?, string?
+---@field mountMemory fun(data: string, name?: string, point?: string, prepend?: string): string?, string?
+---@field mountPoint fun(path: string): string
+---@field openAppend fun(path: string): physfs.File?, string?
+---@field openRead fun(path: string): physfs.File?, string?
+---@field openWrite fun(path: string): physfs.File?, string?
+---@field prefDir fun(org: string, app: string): string?, string?
+---@field realDir fun(path: string): string
+---@field saneConfig fun(org: string, app: string, ext?: string, includeCdRoms?: boolean, archiveFirst?: boolean): string?, string?
+---@field searchPath fun(output?: table): table, number
+---@field stat fun(path: string, output?: table): table
+---@field supportedArchiveTypes fun(output?: table): table, number
+---@field unmount fun(path: string): string?, string?
+---@field useSymlink fun(enable?: boolean): boolean?
+---@field version fun(): integer, integer, integer
+---@field writeDir fun(path?: string): string?, string?
+
+---@alias physfs.aliases.formats
+---|"i"
+---|"u"
+---|"1i"
+---|"1u"
+---|"2i"
+---|"2u"
+---|"4i"
+---|"4u"
+---|"8i"
+---|"8u"
+---|"<i"
+---|"<u"
+---|"<1i"
+---|"<1u"
+---|"<2i"
+---|"<2u"
+---|"<4i"
+---|"<4u"
+---|"<8i"
+---|"<8u"
+---|">i"
+---|">u"
+---|">1i"
+---|">1u"
+---|">2i"
+---|">2u"
+---|">4i"
+---|">4u"
+---|">8i"
+---|">8u"
+
+---@alias physfs.aliases.error_name
+---|'PHYSFS_ERR_OK'                # 0: Success; no error.
+---|'PHYSFS_ERR_OTHER_ERROR'       # 1: Error not otherwise covered here.
+---|'PHYSFS_ERR_OUT_OF_MEMORY'     # 2: Memory allocation failed.
+---|'PHYSFS_ERR_NOT_INITIALIZED'   # 3: PhysicsFS is not initialized.
+---|'PHYSFS_ERR_IS_INITIALIZED'    # 4: PhysicsFS is already initialized.
+---|'PHYSFS_ERR_ARGV0_IS_NULL'     # 5: Needed argv[0], but it is NULL.
+---|'PHYSFS_ERR_UNSUPPORTED'       # 6: Operation or feature unsupported.
+---|'PHYSFS_ERR_PAST_EOF'          # 7: Attempted to access past end of file.
+---|'PHYSFS_ERR_FILES_STILL_OPEN'  # 8: Files still open.
+---|'PHYSFS_ERR_INVALID_ARGUMENT'  # 9: Bad parameter passed to an function.
+---|'PHYSFS_ERR_NOT_MOUNTED'       # 10: Requested archive/dir not mounted.
+---|'PHYSFS_ERR_NOT_FOUND'         # 11: File (or whatever) not found.
+---|'PHYSFS_ERR_SYMLINK_FORBIDDEN' # 12: Symlink seen when not permitted.
+---|'PHYSFS_ERR_NO_WRITE_DIR'      # 13: No write dir has been specified.
+---|'PHYSFS_ERR_OPEN_FOR_READING'  # 14: Wrote to a file opened for reading.
+---|'PHYSFS_ERR_OPEN_FOR_WRITING'  # 15: Read from a file opened for writing.
+---|'PHYSFS_ERR_NOT_A_FILE'        # 16: Needed a file, got a directory (etc).
+---|'PHYSFS_ERR_READ_ONLY'         # 17: Wrote to a read-only filesystem.
+---|'PHYSFS_ERR_CORRUPT'           # 18: Corrupted data encountered.
+---|'PHYSFS_ERR_SYMLINK_LOOP'      # 19: Infinite symbolic link loop.
+---|'PHYSFS_ERR_IO'                # 20: i/o error (hardware failure, etc).
+---|'PHYSFS_ERR_PERMISSION'        # 21: Permission denied.
+---|'PHYSFS_ERR_NO_SPACE'          # 22: No space (disk full, over quota, etc)
+---|'PHYSFS_ERR_BAD_FILENAME'      # 23: Filename is bogus/insecure.
+---|'PHYSFS_ERR_BUSY'              # 24: Tried to modify a file the OS needs.
+---|'PHYSFS_ERR_DIR_NOT_EMPTY'     # 25: Tried to delete dir with files in it.
+---|'PHYSFS_ERR_OS_ERROR'          # 26: Unspecified OS-level error.
+---|'PHYSFS_ERR_DUPLICATE'         # 27: Duplicate entry.
+---|'PHYSFS_ERR_BAD_PASSWORD'      # 28: Bad password.
+---|'PHYSFS_ERR_APP_CALLBACK'      # 29: Application callback reported error.
+
+---@alias physfs.aliases.error_type
+---|0   # PHYSFS_ERR_OK
+---|1   # PHYSFS_ERR_OTHER_ERROR
+---|2   # PHYSFS_ERR_OUT_OF_MEMORY
+---|3   # PHYSFS_ERR_NOT_INITIALIZED
+---|4   # PHYSFS_ERR_IS_INITIALIZED
+---|5   # PHYSFS_ERR_ARGV0_IS_NULL
+---|6   # PHYSFS_ERR_UNSUPPORTED
+---|7   # PHYSFS_ERR_PAST_EOF
+---|8   # PHYSFS_ERR_FILES_STILL_OPEN
+---|9   # PHYSFS_ERR_INVALID_ARGUMENT
+---|10  # PHYSFS_ERR_NOT_MOUNTED
+---|11  # PHYSFS_ERR_NOT_FOUND
+---|12  # PHYSFS_ERR_SYMLINK_FORBIDDEN
+---|13  # PHYSFS_ERR_NO_WRITE_DIR
+---|14  # PHYSFS_ERR_OPEN_FOR_READING
+---|15  # PHYSFS_ERR_OPEN_FOR_WRITING
+---|16  # PHYSFS_ERR_NOT_A_FILE
+---|17  # PHYSFS_ERR_READ_ONLY
+---|18  # PHYSFS_ERR_CORRUPT
+---|19  # PHYSFS_ERR_SYMLINK_LOOP
+---|20  # PHYSFS_ERR_IO
+---|21  # PHYSFS_ERR_PERMISSION
+---|22  # PHYSFS_ERR_NO_SPACE
+---|23  # PHYSFS_ERR_BAD_FILENAME
+---|24  # PHYSFS_ERR_BUSY
+---|25  # PHYSFS_ERR_DIR_NOT_EMPTY
+---|26  # PHYSFS_ERR_OS_ERROR
+---|27  # PHYSFS_ERR_DUPLICATE
+---|28  # PHYSFS_ERR_BAD_PASSWORD
+---|29  # PHYSFS_ERR_APP_CALLBACK
